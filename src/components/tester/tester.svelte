@@ -15,10 +15,10 @@
 	} from 'carbon-components-svelte';
 
 	import {
-		CloudDownload,
-		Edit,
+	CloseOutline,
 		Home,
 		Login,
+		Recycle,
 		UserAdmin,
 		UserFollow,
 		UserSponsor
@@ -28,7 +28,7 @@
 	let currAY, currSM; // system defaults
 
 	let userLN, userFN, userMN, userSF; // basic information
-	let userLR, userRN, userDP, userUN, userPW; // user information
+	let userLR, userRN, userDP, userUN, userPW, userST; // user information
 
 	let loadLN, loadFN, loadMN, loadSF; // basic information
 	let loadLR, loadRN, loadDP, loadUN, loadPW; // load information
@@ -46,6 +46,7 @@
 		where,
 		doc,
 		updateDoc,
+		deleteDoc
 	} from 'firebase/firestore';
 
 	// for generating reference numbers and usernames
@@ -145,7 +146,8 @@
 	async function handleLogin() {
 		try {
 			// Fetch the user's data from Firestore using the entered username
-			const userQuery = query(collection(db, 'users'), where('userUN', '==', nputUN));
+			console.log(nputUN);
+			const userQuery = query(collection(db, 'users'), where('userRN', '==', nputUN));
 
 			const querySnapshot = await getDocs(userQuery);
 
@@ -215,7 +217,9 @@
 		{ key: 'userLR', value: 'Student LRN' },
 		{ key: 'userLN', value: 'Last Name' },
 		{ key: 'userFN', value: 'First Name' },
-		{ key: 'userMN', value: 'Middle Name' }
+		{ key: 'userMN', value: 'Middle Name' },
+		{ key: 'userRN', value: 'Account Code' },
+		{ key: 'userST', value: 'Status' },
 	];
 
 	let rows = [];
@@ -304,6 +308,40 @@
 			console.log('Successfully updated');
 		} catch (error) {
 			console.error('Error updating document:', error);
+		}
+	}
+
+	// delete the loaded data
+	async function deleteDataByReferenceCode() {
+		const preRegistrationRef = collection(db, 'users');
+		const q = query(preRegistrationRef, where('userRN', '==', selectedRowIds.toString()));
+		const snapshot = await getDocs(q);
+
+		if (snapshot.empty) {
+			console.error('Document with the provided reference code not found.');
+			return false;
+		}
+
+		// Assuming referenceCode is unique, so only one document should match
+		const docId = snapshot.docs[0].id;
+
+		try {
+			const docRef = doc(db, 'users', docId);
+			await deleteDoc(docRef);
+			return true; // Successfully deleted
+		} catch (error) {
+			console.error('Error deleting document: ', error);
+			return false; // Deletion failed
+		}
+	}
+
+	async function handleDelete() {
+		const wasSuccessful = await deleteDataByReferenceCode(userRN); // Assuming userRF holds the current reference number
+
+		if (wasSuccessful) {
+			// Handle success, e.g., show a success message or update UI
+		} else {
+			// Handle failure, e.g., show an error message
 		}
 	}
 </script>
@@ -517,28 +555,31 @@
 				<div class="w-screen">
 					<DataTable
 						radio
+						zebra
+						sortable
 						size="short"
 						{headers}
 						{rows}
 						{page}
 						{pageSize}
 						bind:selectedRowIds
+						on:click:row--select={handleReferenceCodeInput}
 						on:mouseenter:row={loadUserData}
 					>
 						<Toolbar>
 							<ToolbarContent>
 								<ToolbarSearch shouldFilterRows />
-								<Button kind="secondary" on:click={loadUserData} icon={CloudDownload} />
 								<Button
-									kind="primary"
-									on:click={getSelectedIndex}
-									icon={Edit}
-									iconDescription="Edit"
+									kind="ghost"
+									on:click={loadUserData}
+									icon={Recycle}
+									iconDescription="Reload"
+									tooltipPosition="left"
 								/>
 							</ToolbarContent>
 						</Toolbar>
 					</DataTable>
-					<Pagination bind:pageSize bind:page totalItems={rows.length} />
+					<Pagination bind:pageSize bind:page totalItems={rows.length} pageSizeInputDisabled />
 					<!-- <Pagination {rows} /> -->
 				</div>
 			</div>
@@ -655,6 +696,7 @@
 							iconDescription="Enroll"
 							tooltipPosition="left"
 							on:click={updateSelectedData}
+							on:click={loadUserData}
 						/>
 						<Button
 							size="field"
@@ -669,6 +711,8 @@
 							icon={UserSponsor}
 							iconDescription="Deactivate"
 							tooltipPosition="left"
+							on:click={handleDelete}
+							on:click={loadUserData}
 						/>
 					</div>
 				</div>
