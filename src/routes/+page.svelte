@@ -3,7 +3,40 @@
 	import { onMount } from 'svelte';
 	import { db } from '../firebase';
 
-	import Tester from '../components/tester/tester.svelte';
+	import {
+		Button,
+		ButtonSet,
+		Checkbox,
+		Content,
+		FluidForm,
+		Form,
+		FormGroup,
+		Header,
+		HeaderUtilities,
+		Link,
+		Modal,
+		PasswordInput,
+		RadioButton,
+		RadioButtonGroup,
+		TextInput
+	} from 'carbon-components-svelte';
+
+	// icons
+	import { Carbon, HelpFilled, Login, NotebookReference, TestTool } from 'carbon-icons-svelte';
+
+	// pictograms
+
+	// variables
+	let modal1 = false;
+	let modal2 = false;
+	let confirmEnabled = false;
+
+	// for modal checkbox
+	function toggleButtonState() {
+		confirmEnabled = !confirmEnabled;
+	}
+
+	function handleLogin() {}
 
 	let connected = true;
 
@@ -14,16 +47,126 @@
 			await getDocs(testCollection);
 			console.log('Database connected.');
 		} catch (error) {
-			console.error('Failed to connect to Firestore:', error);
+			console.error('Failed to connect to database. :', error);
 			connected = false;
 		}
 	});
 </script>
 
-{#if connected}
-	<Tester />
-{:else}
-	<p>
-		Failed to connect to the database. Please check your internet connection or try again later.
+<!-- {#if connected}
+ -->
+<Header company="Project" platformName="JOAN" href="/">
+	<div class="text-white hidden lg:flex">Colegio de San Juan de Dios, Incorporated</div>
+	<div class="text-white flex lg:hidden">for&nbsp<strong>CSJD</strong></div>
+	<HeaderUtilities>
+		<div class="flex">
+			<div class="flex">
+				<Button
+					href="/godmode/"
+					tooltipPosition="left"
+					iconDescription="Testing Tools"
+					kind="secondary"
+					icon={TestTool}
+				/>
+				<Button
+					tooltipPosition="left"
+					iconDescription="About JOAN"
+					kind="secondary"
+					icon={HelpFilled}
+				/>
+				<Button
+					tooltipPosition="left"
+					iconDescription="System Guide"
+					kind="primary"
+					icon={NotebookReference}
+				/>
+			</div>
+		</div>
+	</HeaderUtilities>
+</Header>
+
+<!-- adapts depending on the device -->
+<div class="flex flex-col items-stretch lg:flex-row">
+	<!-- displayed on mobile -->
+	<Content id="#" class="flex flex-col bg-neutral-900 h-60 lg:hidden">
+		<h1 class="pt-20 text-white">Sign in to your<br />JOAN Account.</h1>
+	</Content>
+	<Content id="#" class="bg-neutral-900 w-1/3 h-screen hidden lg:flex" />
+	<Content class="self-center w-11/12 lg:w-2/5">
+		<h1 class="pb-12 hidden lg:flex">Sign in to your<br />JOAN Account.</h1>
+		<Form on:submit>
+			<FormGroup legendText="Enter your account information.">
+				<FluidForm>
+					<div class="flex" />
+					<TextInput labelText="Username" placeholder="Enter username..." required />
+					<PasswordInput
+						required
+						type="password"
+						labelText="Password"
+						placeholder="Enter password..."
+					/>
+				</FluidForm>
+			</FormGroup>
+			<ButtonSet stacked>
+				<Button on:click={handleLogin} icon={Login}>Log in</Button>
+				<Button on:click={() => (modal1 = true)} kind="ghost">Forgot password?</Button>
+			</ButtonSet>
+			<br />
+			<div>
+				New student?
+				<Link href="/registration/student" icon={Carbon}>Register here.</Link>.
+			</div>
+		</Form>
+	</Content>
+</div>
+
+<Modal
+	bind:open={modal1}
+	modalHeading="Reset your password"
+	primaryButtonText="Confirm"
+	primaryButtonDisabled={!confirmEnabled}
+	secondaryButtonText="Cancel"
+	selectorPrimaryFocus="#db-name"
+	on:click:button--secondary={() => (modal1 = false)}
+	on:click:button--primary={() => (modal2 = true)}
+	on:click:button--primary={() => (modal1 = false)}
+>
+	<br />
+	<p>To reset your account, provide the following information:</p>
+	<br />
+	<RadioButtonGroup selected="stud" legendText="Account Type">
+		<RadioButton labelText="Student" value="student" />
+		<RadioButton labelText="Employee" value="employee" />
+	</RadioButtonGroup>
+	<br />
+	<TextInput
+		labelText="Account Code"
+		placeholder="Enter your Account Code"
+		helperText="If unable to be found, contact your system administrator."
+	/>
+	<br />
+	<Checkbox bind:checked={confirmEnabled} labelText="The information above is correct." />
+</Modal>
+<Modal
+	bind:open={modal2}
+	modalHeading="Reset your password"
+	primaryButtonText="Return to Login"
+	primaryButtonDisabled={!confirmEnabled}
+	on:click:button--primary={() => (modal2 = false)}
+>
+	<br />
+	<h4>A notification to reset your account has been sent to your System Administrator.</h4>
+	<br />
+	<h5>Temporary Password:</h5>
+	<h3>csjd.reset123</h3>
+	<br />
+	<p class="italic">
+		Note: Try logging in to your account within 1-2 days from resetting your password. If the
+		temporary password does not work within that period, contact your system administrator for a
+		follow-up reset.
 	</p>
-{/if}
+</Modal>
+
+<!-- {:else}
+	
+{/if} -->

@@ -74,9 +74,9 @@
 
 	let duplLR = false;
 
-	async function savePreReg(data) {
+	async function savePreReg(schoolCode, data) {
 		try {
-			const docRef = await addDoc(collection(db, 'users'), data);
+			const docRef = await addDoc(collection(db, 'schools', schoolCode, 'users'), data);
 			console.log('Document written with ID: ', docRef.id);
 			return docRef.id; // you can return the ID to further use it if needed
 		} catch (e) {
@@ -113,7 +113,7 @@
 			return; // Don't proceed with saving the data if there are duplicates
 		} else {
 			try {
-				await savePreReg(formData);
+				await savePreReg('0303001', formData);
 				alert('Data saved successfully!');
 				resetPreReg();
 			} catch (e) {
