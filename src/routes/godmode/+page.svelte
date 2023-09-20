@@ -21,6 +21,7 @@
 		Education,
 		Friendship,
 		IbmCloudForEducation,
+		InformationFilled,
 		Logout,
 		Money,
 		NotebookReference,
@@ -72,33 +73,38 @@
 
 <SideNav bind:isOpen={isSideNavOpen}>
 	<SideNavItems>
-		<SideNavLink icon={Dashboard} href="../user/" text="User Dashboard" />
-		<SideNavLink icon={UserSettings} href="" text="User Settings" />
-		<SideNavLink icon={Notification} href="" text="Notifications" />
+		<SideNavLink icon={Dashboard} href="../user" text="User Dashboard" />
+		<SideNavLink icon={UserSettings} href="../user/settings" text="User Settings" />
+		<SideNavLink icon={Notification} href="../user/notifications" text="Notifications" />
 		<SideNavDivider />
-		<SideNavLink icon={Settings} href="" text="System Settings" />
-		<SideNavLink icon={RepoArtifact} href="" text="System Reports" />
+		<SideNavLink icon={Dashboard} href="../system" text="System Dashboard" />
+		<SideNavLink icon={Settings} href="../system/settings" text="System Settings" />
+		<SideNavLink icon={RepoArtifact} href="../system/reports" text="System Reports" />
 		<SideNavDivider />
-		<SideNavLink icon={UserAdmin} href="" text="Administrator Dashboard" />
+		<SideNavLink icon={Dashboard} href="../admin" text="Administrator Dashboard" />
+		<SideNavLink icon={UserMultiple} href="../admin/users" text="User Management" />
+		<SideNavLink icon={IbmCloudForEducation} href="../admin/subjects" text="Subject Management" />
+		<SideNavLink icon={CalendarSettings} href="../admin/schedules" text="Schedule Management" />
+		<SideNavLink icon={WatsonHealthStackedScrolling_1} href="../admin/bulletin" text="Bulletin Management" />
 		<SideNavDivider />
-		<SideNavLink icon={UserMultiple} href="" text="User Management" />
-		<SideNavLink icon={IbmCloudForEducation} href="" text="Subject Management" />
-		<SideNavLink icon={CalendarSettings} href="" text="Schedule Management" />
-		<SideNavLink icon={WatsonHealthStackedScrolling_1} href="" text="Bulletin Management" />
+		<SideNavLink icon={Dashboard} href="../financial" text="Financial Dashboard" />
+		<SideNavLink icon={Money} href="../financial/transactions" text="Financial Transactions" />
+		<SideNavLink icon={Currency} href="../financial/settings" text="Financial Settings" />
 		<SideNavDivider />
-		<SideNavLink icon={Money} href="" text="Financial Transactions" />
-		<SideNavLink icon={Currency} href="" text="Financial Settings" />
+		<SideNavLink icon={Dashboard} href="../academic" text="Academic Dashboard" />
+		<SideNavLink icon={Education} href="../academic/students" text="Students" />
+		<SideNavLink icon={Book} href="../academic/subjects" text="Subjects" />
+		<SideNavLink icon={NotebookReference} href="../academic/gradebook" text="Gradebook" />
+		<SideNavLink icon={Friendship} href="../guidance/records" text="Guidance Records" />
 		<SideNavDivider />
-		<SideNavLink icon={Education} href="" text="Students" />
-		<SideNavLink icon={Book} href="" text="Subjects" />
-		<SideNavLink icon={NotebookReference} href="" text="Gradebook" />
-		<SideNavLink icon={Friendship} href="" text="Guidance Records" />
+		<SideNavLink icon={Calendar} href="../info/schedules" text="Schedules" />
+		<SideNavLink icon={WatsonHealthStackedScrolling_2} href="../info/bulletin" text="Bulletin" />
+		<SideNavLink icon={Building} href="../info/school" text="The School" />
 		<SideNavDivider />
-		<SideNavLink icon={Calendar} href="" text="Schedules" />
-		<SideNavLink icon={WatsonHealthStackedScrolling_2} href="" text="Bulletin" />
-		<SideNavLink icon={Building} href="" text="The School" />
+		<SideNavLink icon={Box} href="../archives" text="Archives" />
+		<SideNavLink icon={ReportData} href="../reports" text="Reports" />
 		<SideNavDivider />
-		<SideNavLink icon={Box} href="" text="Archives" />
-		<SideNavLink icon={ReportData} href="" text="Reports" />
+		<SideNavLink icon={InformationFilled} href="../system/about" text="System Information" />
+		<SideNavLink icon={InformationFilled} href="../system/guide" text="System Guide" />
 	</SideNavItems>
 </SideNav>

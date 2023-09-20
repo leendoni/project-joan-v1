@@ -95,10 +95,10 @@
 		<SideNavLink icon={Education} href="../academic/students" text="Students" />
 		<SideNavLink icon={Book} href="../academic/subjects" text="Subjects" />
 		<SideNavLink icon={NotebookReference} href="../academic/gradebook" text="Gradebook" />
-		<SideNavLink icon={Friendship} href="../guidance/records" text="Guidance Records" />
+		<SideNavLink isSelected icon={Friendship} href="../guidance/records" text="Guidance Records" />
 		<SideNavDivider />
 		<SideNavLink icon={Calendar} href="../info/schedules" text="Schedules" />
-		<SideNavLink isSelected icon={WatsonHealthStackedScrolling_2} href="../info/bulletin" text="Bulletin" />
+		<SideNavLink icon={WatsonHealthStackedScrolling_2} href="../info/bulletin" text="Bulletin" />
 		<SideNavLink icon={Building} href="../info/school" text="The School" />
 		<SideNavDivider />
 		<SideNavLink icon={Box} href="../archives" text="Archives" />

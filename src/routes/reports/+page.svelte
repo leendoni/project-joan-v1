@@ -98,11 +98,11 @@
 		<SideNavLink icon={Friendship} href="../guidance/records" text="Guidance Records" />
 		<SideNavDivider />
 		<SideNavLink icon={Calendar} href="../info/schedules" text="Schedules" />
-		<SideNavLink isSelected icon={WatsonHealthStackedScrolling_2} href="../info/bulletin" text="Bulletin" />
+		<SideNavLink icon={WatsonHealthStackedScrolling_2} href="../info/bulletin" text="Bulletin" />
 		<SideNavLink icon={Building} href="../info/school" text="The School" />
 		<SideNavDivider />
 		<SideNavLink icon={Box} href="../archives" text="Archives" />
-		<SideNavLink icon={ReportData} href="../reports" text="Reports" />
+		<SideNavLink isSelected icon={ReportData} href="../reports" text="Reports" />
 		<SideNavDivider />
 		<SideNavLink icon={InformationFilled} href="../system/about" text="System Information" />
 		<SideNavLink icon={InformationFilled} href="../system/guide" text="System Guide" />
