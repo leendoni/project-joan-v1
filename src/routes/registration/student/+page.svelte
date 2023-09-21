@@ -17,7 +17,7 @@
 		TextInput
 	} from 'carbon-components-svelte';
 	// icons
-	import { HelpFilled, Login, NotebookReference, Pen, TestTool } from 'carbon-icons-svelte';
+	import { HelpFilled, Login, NotebookReference, Pen, Return, TestTool } from 'carbon-icons-svelte';
 	import { goto } from '$app/navigation';
 
 	// pictograms
@@ -60,23 +60,11 @@
 		<div class="flex">
 			<div class="flex">
 				<Button
-					href="/test/"
-					tooltipPosition="left"
-					iconDescription="Testing Tools"
-					kind="secondary"
-					icon={TestTool}
-				/>
-				<Button
-					tooltipPosition="left"
-					iconDescription="About JOAN"
-					kind="secondary"
-					icon={HelpFilled}
-				/>
-				<Button
+				href="/"
 					tooltipPosition="left"
 					iconDescription="System Guide"
 					kind="primary"
-					icon={NotebookReference}
+					icon={Return}
 				/>
 			</div>
 		</div>
@@ -98,7 +86,6 @@
 				<FluidForm class="flex flex-col lg:flex-row">
 					<TextInput readonly labelText="Academic Year" placeholder="2023-2024" required />
 					<TextInput readonly labelText="Semester" placeholder="Second" required />
-					<TextInput labelText="Grade Level" placeholder="1, 2, 3, etc." required />
 					<TextInput labelText="Learner's Reference Number" placeholder="Enter your LRN" required />
 				</FluidForm>
 				<br />

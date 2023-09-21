@@ -22,13 +22,21 @@
 	} from 'carbon-components-svelte';
 
 	// icons
-	import { Carbon, HelpFilled, Login, NotebookReference, TestTool } from 'carbon-icons-svelte';
+	import {
+		Carbon,
+		HelpFilled,
+		Login,
+		NotebookReference,
+		TestTool,
+		WatsonHealthCrossReference
+	} from 'carbon-icons-svelte';
 
 	// pictograms
 
 	// variables
 	let modal1 = false;
 	let modal2 = false;
+	let modal3 = false;
 	let confirmEnabled = false;
 
 	// for modal checkbox
@@ -62,23 +70,20 @@
 		<div class="flex">
 			<div class="flex">
 				<Button
-					href="/godmode/"
-					tooltipPosition="left"
-					iconDescription="Testing Tools"
+					href="/godmode"
+					tooltipAlignment="end"
+					tooltipPosition="bottom"
+					iconDescription="Godmode"
 					kind="secondary"
-					icon={TestTool}
+					icon={WatsonHealthCrossReference}
 				/>
 				<Button
-					tooltipPosition="left"
+					tooltipAlignment="end"
+					tooltipPosition="bottom"
 					iconDescription="About JOAN"
 					kind="secondary"
 					icon={HelpFilled}
-				/>
-				<Button
-					tooltipPosition="left"
-					iconDescription="System Guide"
-					kind="primary"
-					icon={NotebookReference}
+					on:click={() => (modal3 = true)}
 				/>
 			</div>
 		</div>
@@ -166,7 +171,28 @@
 		follow-up reset.
 	</p>
 </Modal>
-
+<Modal
+	bind:open={modal3}
+	modalHeading=""
+	primaryButtonText="Close"
+	on:click:button--primary={() => (modal3 = false)}
+>
+	<br />
+	<h1>Project JOAN for CSJDD</h1>
+	<p class="italic">a part of the Joint Online Academic Network</p>
+	<br />
+	<p>
+		This version of Project JOAN is tailored for Colegio de San Juan de Dios Incorporated; a
+		private-catholic school in San Rafael, Bulacan.
+	</p>
+	<br />
+	<p>
+		Merging state-of-the-art technologies like Svelte, SvelteKit, and TailwindCSS with the robust
+		and secure backbone of Firebase, Project JOAN is a web-based platform dedicated to streamlining
+		academic, financial, and administrative processes. Designed with precision, Project JOAN is a
+		testament to efficiency, user-friendliness, and unwavering data security.
+	</p>
+</Modal>
 <!-- {:else}
 	
 {/if} -->

@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation';
+
 	// components
 	import {
 		Button,
@@ -40,6 +42,10 @@
 
 	// variables
 	let isSideNavOpen = false;
+
+	function handleLogout() {
+		goto("/");
+	}
 </script>
 
 <Header company="Project" platformName="JOAN" href="/" bind:isSideNavOpen>
@@ -48,23 +54,34 @@
 		<div class="flex">
 			<div class="flex">
 				<Button
-					tooltipPosition="left"
-					iconDescription="Account Settings"
+					href="../user"
+					tooltipAlignment="end"
+					tooltipPosition="bottom"
+					iconDescription="Dashboard"
+					kind="secondary"
+					icon={Dashboard}
+				/>
+				<Button
+					tooltipAlignment="end"
+					tooltipPosition="bottom"
+					iconDescription="Notifications"
+					kind="secondary"
+					icon={Notification}
+				/>
+				<Button
+					tooltipAlignment="end"
+					tooltipPosition="bottom"
+					iconDescription="User Settings"
 					kind="secondary"
 					icon={UserSettings}
 				/>
 				<Button
-					class="hidden lg:flex"
-					tooltipPosition="left"
-					iconDescription="System Guide"
-					kind="secondary"
-					icon={NotebookReference}
-				/>
-				<Button
-					tooltipPosition="left"
+					tooltipAlignment="end"
+					tooltipPosition="bottom"
 					iconDescription="Logout"
 					kind="danger-tertiary"
 					icon={Logout}
+					on:click={handleLogout}
 				/>
 			</div>
 		</div>
@@ -73,25 +90,25 @@
 
 <SideNav bind:isOpen={isSideNavOpen}>
 	<SideNavItems>
-		<SideNavLink icon={Dashboard} href="../user" text="User Dashboard" />
+		<!-- <SideNavLink icon={Dashboard} href="../user" text="User Dashboard" />
 		<SideNavLink icon={UserSettings} href="../user/settings" text="User Settings" />
 		<SideNavLink icon={Notification} href="../user/notifications" text="Notifications" />
-		<SideNavDivider />
-		<SideNavLink icon={Dashboard} href="../system" text="System Dashboard" />
+		<SideNavDivider /> -->
 		<SideNavLink icon={Settings} href="../system/settings" text="System Settings" />
 		<SideNavLink icon={RepoArtifact} href="../system/reports" text="System Reports" />
 		<SideNavDivider />
-		<SideNavLink icon={Dashboard} href="../admin" text="Administrator Dashboard" />
 		<SideNavLink icon={UserMultiple} href="../admin/users" text="User Management" />
 		<SideNavLink icon={IbmCloudForEducation} href="../admin/subjects" text="Subject Management" />
 		<SideNavLink icon={CalendarSettings} href="../admin/schedules" text="Schedule Management" />
-		<SideNavLink icon={WatsonHealthStackedScrolling_1} href="../admin/bulletin" text="Bulletin Management" />
+		<SideNavLink
+			icon={WatsonHealthStackedScrolling_1}
+			href="../admin/bulletin"
+			text="Bulletin Management"
+		/>
 		<SideNavDivider />
-		<SideNavLink icon={Dashboard} href="../financial" text="Financial Dashboard" />
 		<SideNavLink icon={Money} href="../financial/transactions" text="Financial Transactions" />
 		<SideNavLink icon={Currency} href="../financial/settings" text="Financial Settings" />
 		<SideNavDivider />
-		<SideNavLink icon={Dashboard} href="../academic" text="Academic Dashboard" />
 		<SideNavLink icon={Education} href="../academic/students" text="Students" />
 		<SideNavLink icon={Book} href="../academic/subjects" text="Subjects" />
 		<SideNavLink icon={NotebookReference} href="../academic/gradebook" text="Gradebook" />
