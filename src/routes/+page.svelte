@@ -20,14 +20,11 @@
 		RadioButtonGroup,
 		TextInput
 	} from 'carbon-components-svelte';
-
-	// icons
+	
 	import {
 		Carbon,
 		HelpFilled,
 		Login,
-		NotebookReference,
-		TestTool,
 		WatsonHealthCrossReference
 	} from 'carbon-icons-svelte';
 
