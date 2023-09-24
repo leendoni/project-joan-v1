@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { collection, getDocs } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { db } from '../../../firebase';
@@ -14,28 +15,42 @@
 		Header,
 		HeaderUtilities,
 		Modal,
-		TextInput
+		RadioButton,
+		RadioButtonGroup,
+		RadioTile,
+		TextInput,
+		TileGroup
 	} from 'carbon-components-svelte';
-	// icons
-	import { HelpFilled, Login, NotebookReference, Pen, Return, TestTool } from 'carbon-icons-svelte';
-	import { goto } from '$app/navigation';
 
-	// pictograms
+	import { Debug, GenderFemale, GenderMale, Pen, Return } from 'carbon-icons-svelte';
 
 	// variables
-	let open = false;
-	let confirmEnabled = false;
+
+	// for gender
+	let male = true;
+	let female = true;
+
+	function isMale() {
+		male = true;
+		female = false;
+	}
+
+	function isFemale() {
+		male = false;
+		female = true;
+	}
 
 	// for confirmation checkbox
-	function toggleButtonState() {
-		confirmEnabled = !confirmEnabled;
-	}
+	let confirmEnabled = false;
 
 	//for closing the modal / redirecting to home
+	let open = false;
+
 	function goHome() {
 		open = false;
-		goto('/');
+		goto('/login/employee');
 	}
+
 	let connected = true;
 
 	onMount(async () => {
@@ -60,9 +75,17 @@
 		<div class="flex">
 			<div class="flex">
 				<Button
-				href="/"
+					href="/bugs/report"
+					tooltipAlignment="end"
+					tooltipPosition="bottom"
+					iconDescription="Report a problem"
+					kind="secondary"
+					icon={Debug}
+				/>
+				<Button
+					href="/login/employee"
 					tooltipPosition="left"
-					iconDescription="System Guide"
+					iconDescription="Return to login"
 					kind="primary"
 					icon={Return}
 				/>
@@ -75,7 +98,7 @@
 <div class="flex flex-col items-stretch">
 	<!-- displayed on mobile -->
 	<Content id="#" class="flex flex-col bg-neutral-900 h-72">
-		<h1 class="pt-28 lg:pt-44 text-white">Account Registration</h1>
+		<h1 class="pt-28 lg:pt-44 text-white">Employee Registration</h1>
 	</Content>
 	<Content class="h-full w-full">
 		<Form on:submit>
@@ -83,10 +106,17 @@
 				legendText="For aspiring students, please provide us with your personal information."
 			>
 				<br />
+				<RadioButtonGroup legendText="Pick your provided government ID" selected="">
+                    <RadioButton labelText="PRC ID" value="PRC" />
+                    <RadioButton labelText="Driver's License" value="LTO" />
+                    <RadioButton labelText="National ID" value="NAT" />
+                    <RadioButton labelText="PhilHealth ID" value="PHL" />
+                    <RadioButton labelText="Passport" value="PPT" />
+                </RadioButtonGroup>
+                <br>
 				<FluidForm class="flex flex-col lg:flex-row">
-					<TextInput readonly labelText="Academic Year" placeholder="2023-2024" required />
-					<TextInput readonly labelText="Semester" placeholder="Second" required />
-					<TextInput labelText="Learner's Reference Number" placeholder="Enter your LRN" required />
+					<TextInput labelText="Government ID Number" placeholder="Enter your ID number" required />
+					<TextInput labelText="Expiration Date" placeholder="Expiration Date" required />
 				</FluidForm>
 				<br />
 				<FluidForm class="flex flex-col lg:flex-row">
@@ -94,15 +124,30 @@
 					<TextInput labelText="First Name" placeholder="Your first name" required />
 					<TextInput labelText="Middle Name" placeholder="Your middle name" required />
 					<TextInput labelText="Suffix (if any)" placeholder="Sr., Jr., III., etc." required />
+					<ButtonSet class="flex flex-row lg:flex-col">
+						<div class="w-1/2 lg:w-full">
+							<Button disabled={!male} size="small" kind="secondary" on:click={isMale}>Male</Button>
+						</div>
+						<div class="w-1/2 lg:w-full">
+							<Button disabled={!female} size="small" kind="secondary" on:click={isFemale}
+								>Female</Button
+							>
+						</div>
+					</ButtonSet>
 				</FluidForm>
 				<FluidForm class="flex flex-col lg:flex-row">
 					<TextInput labelText="Contact Number" placeholder="Your contact number" required />
-					<TextInput labelText="Student Address" placeholder="Your current address" required />
+					<TextInput labelText="Email Address" placeholder="Your email address" required />
+					<TextInput labelText="Employee Address" placeholder="Your current address" required />
 				</FluidForm>
 				<FluidForm class="flex flex-col lg:flex-row">
-					<TextInput labelText="Mother's Name" placeholder="Your mother's name" required />
-					<TextInput labelText="Father's Name" placeholder="Your father's name" required />
-					<TextInput labelText="Guardian's Name (optional)" placeholder="Your guardian's name" />
+					<TextInput labelText="Contact Person" placeholder="Your contact person's name" required />
+					<TextInput labelText="Relation (optional)" placeholder="Your relation to your contact person" required />
+                    <TextInput
+						labelText="Emergency Contact Number"
+						placeholder="Your emergency contact number"
+						required
+					/>
 				</FluidForm>
 			</FormGroup>
 			<ButtonSet class="flex flex-col gap-2 lg:flex-row">
@@ -117,7 +162,7 @@
 
 <Modal
 	bind:open
-	modalHeading="JOAN Account Registered"
+	modalHeading="Account Registered!"
 	primaryButtonText="Return to login"
 	on:click:button--primary={goHome}
 >
@@ -127,7 +172,7 @@
 			<p>Below are your account details:</p>
 			<br />
 			<p class="italic">Username:</p>
-			<h5>Lobramonte.031859@csjd.project-joan.cloud</h5>
+			<h5>lobramonte.31859</h5>
 			<br />
 			<p class="italic">Password:</p>
 			<h5>Lobramonte031859</h5>

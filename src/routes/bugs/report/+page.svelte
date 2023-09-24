@@ -32,32 +32,20 @@
 		Notification,
 		RepoArtifact,
 		ReportData,
+		Return,
 		Settings,
 		UserSettings,
 		WatsonHealthStackedScrolling_1,
 		WatsonHealthStackedScrolling_2
 	} from 'carbon-icons-svelte';
-	import { onMount } from 'svelte';
 
 	// pictograms
 
 	// variables
 	let isSideNavOpen = false;
 
-	function handleLogout() {
-		goto('/login');
-	}
-
-	let userFN;
-
-	onMount(() => {
-		userFN = localStorage.getItem('userFN');
-	});
-
-	function clearLS() {
-		localStorage.removeItem('userAC');
-		localStorage.removeItem('userCL');
-		localStorage.removeItem('userFN');
+	function handleBack() {
+        window.history.back();
 	}
 </script>
 
@@ -99,11 +87,10 @@
 				<Button
 					tooltipAlignment="end"
 					tooltipPosition="bottom"
-					iconDescription="Logout"
-					kind="danger-tertiary"
-					icon={Logout}
-					on:click={handleLogout}
-					on:click={clearLS}
+					iconDescription="Return"
+					kind="primary"
+					icon={Return}
+					on:click={handleBack}
 				/>
 			</div>
 		</div>
@@ -112,6 +99,8 @@
 
 <SideNav bind:isOpen={isSideNavOpen}>
 	<SideNavItems>
+		<SideNavLink icon={Debug} href="../bugs" text="Bugs" />
+		<SideNavDivider />
 		<SideNavLink icon={Settings} href="../system/settings" text="System Settings" />
 		<SideNavLink icon={RepoArtifact} href="../system/reports" text="System Reports" />
 		<SideNavDivider />
@@ -145,5 +134,5 @@
 </SideNav>
 
 <Content>
-	Hello, {userFN}!
+    
 </Content>
