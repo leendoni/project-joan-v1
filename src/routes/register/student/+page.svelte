@@ -33,151 +33,153 @@
 	// #region database variables, fields
 	let pageID = '/register/student';
 
-	// system variables
-	let systID = '',
-		systDT = '',
-		systST = '',
-		systLD = '';
+	// system
+	let systID = '', // campus code
+		systDT = '', // system date + time
+		systST = ''; // status
 
 	// modules
-	let modlID = '',
-		modlNM = '',
-		modlRQ = '',
-		modlON = '';
+	let modlID = '', // module id
+		modlNM = '', // module name
+		modlON = ''; // active inactive
 
 	// academics
-	let acadYR = '',
-		acadST = '',
-		acadND = '',
-		acadSM = '',
-		acadGD = '';
+	let acadYR = '', // active acad year
+		acadST = '', // start date
+		acadND = '', // end date
+		acadSM = '', // semester
+		acadGD = ''; // period
 
 	// users
-	let userID = '',
-		userCL = '',
-		userUN = '',
-		userPW = '',
-		userAC = '',
-		userLR = '',
-		userLN = '',
-		userFN = '',
-		userMN = '',
-		userSF = '',
-		userGD = '',
-		userCN = '',
-		userAD = '',
-		userFA = '',
-		userMA = '',
-		userGA = '',
-		userCP = '',
-		userCR = '',
-		userEC = '',
-		userYR = '',
-		userSC = '',
-		userUS = '',
-		userSD = '',
-		userAV = '';
-
-	let userON = '',
-		userHS = '',
-		userRP = '',
-		userUC = '',
-		userR1 = '',
-		userR2 = '',
-		userR3 = '',
-		userR4 = '',
-		userR5 = '',
-		userR6 = '';
+	let userID = '', // user ID
+		userCL = '', // class
+		userUN = '', // username
+		userPW = '', // password
+		userLR = '', // LRN
+		userLN = '', // last name
+		userFN = '', // first name
+		userMN = '', // middle name
+		userSF = '', // suffix
+		userGD = '', // gender
+		userCN = '', // contact num
+		userAD = '', // address
+		userFA = '', // father
+		userMA = '', // mother
+		userGA = '', // guardian
+		userCP = '', // contact person
+		userCR = '', // contact relation
+		userEC = '', // emergency contact
+		userAY = '', // current acad year
+		userSM = '', // current semester
+		userYR = '', // current year
+		userSC = '', // current section
+		userSD = '', // schedule assignment (for personnel)
+		userAV = ''; // user average
+	let userON = '', // active, inactive
+		userHS = '', // has suffix
+		userRP = '', // reset password
+		userUC = '', // unsaved changes
+		userR1 = '', // requirements (up to 9)
+		userR2 = '', // requirements (up to 9)
+		userR3 = '', // requirements (up to 9)
+		userR4 = '', // requirements (up to 9)
+		userR5 = '', // requirements (up to 9)
+		userR6 = '', // requirements (up to 9)
+		userR7 = '', // requirements (up to 9)
+		userR8 = '', // requirements (up to 9)
+		userR9 = ''; // requirements (up to 9)
 
 	// population
-	let totlSP = '',
-		totlRG = '';
-
-	let totY01 = '',
-		totY02 = '',
-		totY03 = '',
-		totY04 = '',
-		totY05 = '',
-		totY06 = '',
-		totY07 = '',
-		totY08 = '',
-		totY09 = '',
-		totY10 = '',
-		totY11 = '',
-		totY12 = '';
-
-	let totM01 = '',
-		totM02 = '',
-		totM03 = '',
-		totM04 = '',
-		totM05 = '',
-		totM06 = '',
-		totM07 = '',
-		totM08 = '',
-		totM09 = '',
-		totM10 = '',
-		totM11 = '',
-		totM12 = '';
-
-	let totF01 = '',
-		totF02 = '',
-		totF03 = '',
-		totF04 = '',
-		totF05 = '',
-		totF06 = '',
-		totF07 = '',
-		totF08 = '',
-		totF09 = '',
-		totF10 = '',
-		totF11 = '',
-		totF12 = '';
+	let totlRG = ''; // total registered
+	let totY01 = '', // total per year level (up to 12)
+		totY02 = '', // total per year level (up to 12)
+		totY03 = '', // total per year level (up to 12)
+		totY04 = '', // total per year level (up to 12)
+		totY05 = '', // total per year level (up to 12)
+		totY06 = '', // total per year level (up to 12)
+		totY07 = '', // total per year level (up to 12)
+		totY08 = '', // total per year level (up to 12)
+		totY09 = '', // total per year level (up to 12)
+		totY10 = '', // total per year level (up to 12)
+		totY11 = '', // total per year level (up to 12)
+		totY12 = ''; // total per year level (up to 12)
+	let totM01 = '', // total male per year
+		totM02 = '', // total male per year
+		totM03 = '', // total male per year
+		totM04 = '', // total male per year
+		totM05 = '', // total male per year
+		totM06 = '', // total male per year
+		totM07 = '', // total male per year
+		totM08 = '', // total male per year
+		totM09 = '', // total male per year
+		totM10 = '', // total male per year
+		totM11 = '', // total male per year
+		totM12 = ''; // total male per year
+	let totF01 = '', // total female per year
+		totF02 = '', // total female per year
+		totF03 = '', // total female per year
+		totF04 = '', // total female per year
+		totF05 = '', // total female per year
+		totF06 = '', // total female per year
+		totF07 = '', // total female per year
+		totF08 = '', // total female per year
+		totF09 = '', // total female per year
+		totF10 = '', // total female per year
+		totF11 = '', // total female per year
+		totF12 = ''; // total female per year
 
 	// subjects
-	let subjID = '',
-		subjNM = '',
-		subjTC = '';
+	let subjID = '', // subject id
+		subjNM = '', // subject name
+		subjTC = '', // teacher (take id)
+		subjAY = ''; // acad year of subject
 
 	// financials
-	let tranID = '',
-		tranNM = '',
-		tranDC = '',
-		tranAM = '',
-		tranPY = '';
+	let tranID = '', // transaction id
+		tranNM = '', // transaction name
+		tranDC = '', // description
+		tranAY = '', // acad year
+		tranAM = '', // amount needed
+		tranPY = ''; // payor. put grade levels here
 
-	let tranCD = '',
-		tranPB = '',
-		tranAT = '',
-		tranAC = '',
-		tranVD = '';
+	// transactions
+	let tranCD = '', // transaction code (after pay)
+		tranPB = '', // paid by (put userID to log)
+		tranAT = '', // amount tendered
+		tranAC = '', // amount change
+		tranVD = ''; // void (if refunded)
 
 	// schedules
-	let schdID = '';
+	let schdID = '', // schedule id (assign to sections and teachers)
+		schdAY = ''; // acad year
 
 	// campus bulletin
-	let postID = '',
-		postTT = '',
-		postDC = '',
-		postBY = '',
-		postVW = '',
-		postSD = '',
-		postED = '';
+	let postID = '', // post id
+		postTT = '', // title
+		postDC = '', // description
+		postBY = '', // take userID
+		postVW = '', // only viewable by? put class
+		postSD = '', // start date
+		postED = '', // end date
+		postAY = ''; // acad year
 
 	// gradebook
-	let gradOF = '',
-		gradON = '',
-		gradAY = '',
-		gradQT = '';
+	let gradOF = '', // load userID here
+		gradON = '', // load subjID here
+		gradAY = '', // academic year
+		gradQ1 = '', // quarters
+		gradFN = ''; // final grade
 
 	// problems
-	let probID = '',
-		probTT = '',
-		probDC = '',
-		probST = '';
+	let probID = '', // report ID
+		probTT = '', // title
+		probDC = '', // description
+		probST = ''; // status
 
 	// locals
-	let logdID = '',
-		logdCL = '',
-		logdFN = '';
+	let logdID = '', // logged in user ID
+		logdCL = '', // logged in class
+		logdFN = ''; // logged in first name
 	// #endregion
 
 	// #region functional variables
@@ -214,7 +216,7 @@
 
 	function goHome() {
 		mdalRG1 = false;
-		goto('/login/student');
+		goto('/login');
 	}
 
 	function clear() {
@@ -244,7 +246,7 @@
 		for (let i = 0; i < 6; i++) {
 			result += characters.charAt(Math.floor(Math.random() * characters.length));
 		}
-		userAC = result;
+		userID = result;
 	}
 
 	function generateUN() {
@@ -287,7 +289,7 @@
 			userEC == '' ||
 			userUN == '' ||
 			userPW == '' ||
-			userAC == ''
+			userID == ''
 		) {
 			confirm = false;
 			fillST = false;
@@ -316,8 +318,10 @@
 
 			// Construct the data object
 			const formData = {
-				acadYR: '2023-2024',
-				acadSM: 'Second',
+				userID,
+				userCL: 'student',
+				userUN,
+				userPW: hashedPassword,
 				userLR,
 				userLN,
 				userFN,
@@ -326,15 +330,31 @@
 				userGD,
 				userCN,
 				userAD,
-				userMA,
 				userFA,
+				userMA,
 				userGA,
+				userCP,
+				userCR,
 				userEC,
-				userUN,
-				userPW: hashedPassword,
-				userAC,
-				userON,
-				userRP
+				userAY: '2023-2024',
+				userSM: 'Second',
+				userYR,
+				userSC,
+				userSD,
+				userAV,
+				userON: 'INACTIVE',
+				userHS,
+				userRP,
+				userUC,
+				userR1,
+				userR2,
+				userR3,
+				userR4,
+				userR5,
+				userR6,
+				userR7,
+				userR8,
+				userR9
 			};
 
 			// check duplicates
@@ -386,15 +406,14 @@
 			<div class="flex">
 				<div class="flex">
 					<Button
-						tooltipAlignment="end"
-						tooltipPosition="bottom"
+						tooltipPosition="left"
 						iconDescription="Report a problem"
-						kind="secondary"
+						kind="ghost"
 						icon={Debug}
 						on:click={() => (mdalBG1 = true)}
 					/>
 					<Button
-						href="/login/student"
+						href="/login"
 						tooltipPosition="left"
 						iconDescription="Return to login"
 						kind="primary"
@@ -406,12 +425,12 @@
 	</Header>
 
 	<!-- adapts depending on the device -->
-	<div class="flex flex-col items-stretch">
+	<div class="flex flex-col">
 		<!-- displayed on mobile -->
 		<Content id="#" class="flex flex-col bg-neutral-900 h-72">
 			<h1 class="pt-28 lg:pt-44 text-white">Student Registration</h1>
 		</Content>
-		<Content class="h-full w-full">
+		<Content class="h-auto">
 			<Form on:submit>
 				<FormGroup
 					legendText="For aspiring students, please provide us with your personal information."
@@ -528,6 +547,12 @@
 					<br />
 					<FluidForm class="flex flex-col lg:flex-row">
 						<TextInput
+							bind:value={userID}
+							labelText="Account ID"
+							placeholder="Your system-generated account ID"
+							readonly
+						/>
+						<TextInput
 							bind:value={userUN}
 							labelText="Username"
 							placeholder="Your system-generated username"
@@ -537,25 +562,22 @@
 							bind:value={userPW}
 							labelText="Password"
 							placeholder="Enter your password"
+							tooltipPosition="left"
 							required
 						/>
-						<TextInput
-							bind:value={userAC}
-							labelText="Account Code"
-							placeholder="Your system-generated account code"
-							readonly
-						/>
 					</FluidForm>
+					<br />
+					<ButtonSet class="flex flex-col gap-2 lg:flex-row">
+						<Checkbox
+							bind:checked={confirm}
+							on:click={generateUN}
+							on:click={generateAC}
+							labelText="I certify that the information above is correct."
+						/>
+						<br />
+						<Button disabled={!confirm} on:click={register} icon={Pen}>Register</Button>
+					</ButtonSet>
 				</FormGroup>
-				<ButtonSet class="flex flex-col gap-2 lg:flex-row">
-					<Checkbox
-						bind:checked={confirm}
-						on:click={generateUN}
-						on:click={generateAC}
-						labelText="I certify that the information above is correct."
-					/>
-					<Button disabled={!confirm} on:click={register} icon={Pen}>Register</Button>
-				</ButtonSet>
 			</Form>
 		</Content>
 	</div>
@@ -567,10 +589,9 @@
 			<div class="flex">
 				<div class="flex">
 					<Button
-						tooltipAlignment="end"
-						tooltipPosition="bottom"
+						tooltipPosition="left"
 						iconDescription="Report a problem"
-						kind="secondary"
+						kind="ghost"
 						icon={Debug}
 						on:click={() => (mdalBG1 = true)}
 					/>
@@ -647,7 +668,7 @@
 			<h5>{userUN}</h5>
 			<br />
 			<p class="italic">Account Code:</p>
-			<h3>{userAC}</h3>
+			<h3>{userID}</h3>
 			<br />
 		</div>
 		<div>
@@ -667,7 +688,7 @@
 	<div class="flex flex-col content-center">
 		<div>
 			<br />
-			<h4>Your Learner's Reference Number, {userLR} already exists on the database.</h4>
+			<h4>Your Learner's Reference Number {userLR} already exists on the database.</h4>
 			<br />
 			<p class="italic">
 				Double check the LRN you have input. If the problem still persists, contact the school
