@@ -2,7 +2,16 @@
 	// #region imports
 	// for firebase
 	import { goto } from '$app/navigation';
-	import { addDoc, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+	import {
+		addDoc,
+		collection,
+		deleteDoc,
+		doc,
+		getDocs,
+		query,
+		updateDoc,
+		where
+	} from 'firebase/firestore';
 	import { db } from '../../firebase';
 
 	import { onMount } from 'svelte';
@@ -22,6 +31,7 @@
 		Button,
 		ButtonSet,
 		Checkbox,
+		ComboBox,
 		Content,
 		DataTable,
 		FluidForm,
@@ -30,6 +40,7 @@
 		Header,
 		HeaderGlobalAction,
 		HeaderUtilities,
+		InlineNotification,
 		Link,
 		Modal,
 		Pagination,
@@ -53,6 +64,7 @@
 	} from 'carbon-components-svelte';
 
 	import {
+		Add,
 		Book,
 		Box,
 		Building,
@@ -61,6 +73,7 @@
 		Currency,
 		Dashboard,
 		Debug,
+		Delete,
 		Edit,
 		Education,
 		Events,
@@ -82,6 +95,7 @@
 		Save,
 		Settings,
 		SettingsAdjust,
+		TrashCan,
 		UserAdmin,
 		UserFollow,
 		UserSettings,
@@ -374,21 +388,6 @@
 	let mdalRG3 = false;
 	let mdalBG1 = false;
 
-	let headers = [
-		{ key: 'userID', value: 'Account ID' },
-		{ key: 'userLR', value: 'Student LRN' },
-		{ key: 'userLN', value: 'Last Name' },
-		{ key: 'userFN', value: 'First Name' },
-		{ key: 'userMN', value: 'Middle Name' },
-		{ key: 'userON', value: 'Status' }
-	];
-
-	let rows = [];
-	let pageSize = 5;
-	let page = 1;
-
-	let selectedRowIds = []; // get toggled radio
-
 	// database values
 	const getSchoolID = doc(db, 'schools', '0303001');
 	const getUsers = collection(getSchoolID, 'users');
@@ -483,6 +482,21 @@
 	// #region user management
 	let editM06 = true;
 
+	let headers06 = [
+		{ key: 'userID', value: 'Account ID' },
+		{ key: 'userLR', value: 'Student LRN' },
+		{ key: 'userLN', value: 'Last Name' },
+		{ key: 'userFN', value: 'First Name' },
+		{ key: 'userMN', value: 'Middle Name' },
+		{ key: 'userON', value: 'Status' }
+	];
+
+	let rows06 = [];
+	let pageSize06 = 5;
+	let page06 = 1;
+
+	let selectedRowIds06 = []; // get toggled radio
+
 	function openM06() {
 		if (!open06) {
 			clearOpen();
@@ -504,8 +518,19 @@
 	function enableEditM06() {
 		if (editM06) {
 			editM06 = false;
+
+			if (userGD == 'Male') {
+				male = true;
+				female = false;
+			} else {
+				female = true;
+				male = false;
+			}
 		} else if (!editM06) {
 			editM06 = true;
+
+			male = false;
+			female = false;
 		}
 	}
 
@@ -526,7 +551,7 @@
 	}
 
 	async function handleReferenceCodeInput() {
-		const data = await fetchDataByReferenceCode(selectedRowIds.toString()); // convert to string or it wont load
+		const data = await fetchDataByReferenceCode(selectedRowIds06.toString()); // convert to string or it wont load
 
 		if (data) {
 			userID = data.userID;
@@ -565,7 +590,7 @@
 
 	async function loadUserData() {
 		const data = await getUserData();
-		rows = data.map((item) => ({
+		rows06 = data.map((item) => ({
 			id: item.userID,
 			userID: item.userID,
 			userCL: item.userCL,
@@ -598,7 +623,7 @@
 
 	async function loadStudentData() {
 		const data = await getStudentData();
-		rows = data.map((item) => ({
+		rows06 = data.map((item) => ({
 			id: item.userID,
 			userID: item.userID,
 			userCL: item.userCL,
@@ -631,7 +656,7 @@
 
 	async function loadEmployeeData() {
 		const data = await getEmployeeData();
-		rows = data.map((item) => ({
+		rows06 = data.map((item) => ({
 			id: item.userID,
 			userID: item.userID,
 			userCL: item.userCL,
@@ -680,7 +705,7 @@
 		const getSchoolID = doc(db, 'schools', '0303001');
 		const getUsers = collection(getSchoolID, 'users');
 
-		const q = query(getUsers, where('userID', '==', selectedRowIds.toString()));
+		const q = query(getUsers, where('userID', '==', selectedRowIds06.toString()));
 		const snapshot = await getDocs(q);
 
 		if (snapshot.empty) {
@@ -698,8 +723,54 @@
 			console.error('Error updating document:', error);
 		}
 	}
+
+	async function deleteDataByReferenceCode(referenceCode) {
+		const getSchoolID = doc(db, 'schools', '0303001');
+		const getUsers = collection(getSchoolID, 'users');
+
+		const q = query(getUsers, where('userID', '==', referenceCode));
+		const snapshot = await getDocs(q);
+
+		if (snapshot.empty) {
+			// No records found for the provided reference code
+			console.log('fetchDataByReferenceCode: Empty records.');
+			return null;
+		}
+
+		const docId = snapshot.docs[0].id;
+
+		try {
+			const docRef = doc(db, 'schools', '0303001', 'users', docId);
+			await deleteDoc(docRef);
+			return true; // Successfully deleted
+		} catch (error) {
+			console.error('Error deleting document: ', error);
+			return false; // Deletion failed
+		}
+	}
+
+	async function deleteLoadM06() {
+		const wasSuccessful = await deleteDataByReferenceCode(userID); // Assuming userRF holds the current reference number
+
+		if (wasSuccessful) {
+			// Handle success, e.g., show a success message or update UI
+		} else {
+			// Handle failure, e.g., show an error message
+		}
+	}
 	// #endregion
 	// #region financial settings
+	let headers17 = [
+		{ key: 'tranID', value: 'Transaction ID' },
+		{ key: 'tranNM', value: 'Transaction Name' }
+	];
+
+	let rows17 = [];
+	let pageSize17 = 5;
+	let page17 = 1;
+
+	let selectedRowIds17 = [];
+
 	function openM17() {
 		if (!open17) {
 			clearOpen();
@@ -726,6 +797,78 @@
 		}
 		tranID = result;
 	}
+
+	async function checkDuplicateTID(field, value) {
+		const getSchoolID = doc(db, 'schools', '0303001');
+		const getTransactions = collection(getSchoolID, 'financial');
+		const q = query(getTransactions, where(field, '==', value));
+		const snapshot = await getDocs(q);
+		return !snapshot.empty; // Returns true if the entry exists
+	}
+
+	async function createM17(event) {
+		generateTranID();
+		let duplID = await checkDuplicateTID('tranID', tranID);
+
+		if (tranID == '' || tranNM == '' || tranAM == '' || tranPY == '') {
+		} else {
+		}
+
+		// Construct the data object
+		const formData = {
+			tranAY,
+			tranID,
+			tranNM,
+			tranDC,
+			tranAM,
+			tranPY
+		};
+
+		// check duplicates
+		if (duplID) {
+			return; // Don't proceed with saving the data if there are duplicates
+		} else {
+			try {
+				await uploadM17(formData);
+			} catch (e) {
+				console.log('Failed to save data. Please try again.');
+			}
+		}
+	}
+
+	async function uploadM17(data) {
+		try {
+			const docRef = await addDoc(collection(db, 'schools', '0303001', 'financial'), data);
+			console.log('Document written with ID: ', docRef.id);
+			return docRef.id; // you can return the ID to further use it if needed
+		} catch (e) {
+			console.error('Error adding document: ', e);
+			throw e; // re-throwing the error for the caller to handle
+		}
+	}
+
+	async function getFinancialData() {
+		const getSchoolID = doc(db, 'schools', '0303001');
+		const getTransactions = collection(getSchoolID, 'financial');
+		const q = query(getTransactions);
+		const snapshot = await getDocs(q);
+		const data = snapshot.docs.map((doc) => doc.data());
+		return data;
+	}
+
+	async function loadFinancialData() {
+		const data = await getFinancialData();
+		rows17 = data.map((item) => ({
+			id: item.tranID,
+			tranAY: item.tranAY,
+			tranID: item.tranID,
+			tranNM: item.tranNM,
+			tranDC: item.tranDC,
+			tranAM: item.tranAM,
+			tranPY: item.tranPY
+		}));
+	}
+
 	// #endregion
 </script>
 
@@ -829,12 +972,7 @@
 			<div class="flex flex-col pl-10 pt-10 block relative">
 				<Content>
 					<div class="flex flex-col gap-4">
-						<div class="flex lg:hidden">
-							<p>
-								If you are seeing this message, your screen is too small.<br /><br />Change to a
-								device with a larger screen or rotate your device to view this section.
-							</p>
-						</div>
+						<div class="flex lg:hidden" />
 						<div class="flex gap-4 items-center">
 							<Group />
 							<h1>User Management</h1>
@@ -849,11 +987,11 @@
 									zebra
 									sortable
 									size="short"
-									{headers}
-									{rows}
-									{page}
-									{pageSize}
-									bind:selectedRowIds
+									headers={headers06}
+									rows={rows06}
+									{page06}
+									{pageSize06}
+									bind:selectedRowIds={selectedRowIds06}
 									on:click:row--select={handleReferenceCodeInput}
 								>
 									<Toolbar>
@@ -883,16 +1021,25 @@
 												icon={Save}
 												iconDescription="Save Changes"
 												tooltipPosition="left"
+												bind:disabled={editM06}
 												on:click={enableEditM06}
 												on:click={updateLoadM06}
+											/>
+											<Button
+												kind="danger"
+												icon={TrashCan}
+												iconDescription="Delete Selected"
+												tooltipPosition="left"
+												bind:disabled={editM06}
+												on:click={deleteLoadM06}
 											/>
 										</ToolbarContent>
 									</Toolbar>
 								</DataTable>
 								<Pagination
-									bind:pageSize
-									bind:page
-									totalItems={rows.length}
+									bind:pageSize06
+									bind:page06
+									totalItems={rows06.length}
 									pageSizeInputDisabled
 								/>
 								<!-- <Pagination {rows} /> -->
@@ -1059,27 +1206,124 @@
 							</Tooltip>
 						</div>
 						<div>
-							<FluidForm class="flex flex-col lg:flex-row">
-								<TextInput
-									bind:value={tranAY}
-									labelText="Active Academic Year"
-									placeholder="Where the transaction is used"
-									required
-								/>
-								<TextInput
-									bind:value={tranID}
-									readonly
-									labelText="Transaction ID"
-									placeholder="This is system-generated"
-									required
-								/>
-								<TextInput
-									bind:value={tranNM}
-									labelText="Transaction Name"
-									placeholder="Title of transaction"
-									required
-								/>
-							</FluidForm>
+							<div class="flex flex-col lg:flex-row gap-4">
+								<div class="flex flex-col lg:w-1/2">
+									<DataTable
+										radio
+										zebra
+										sortable
+										size="short"
+										headers={headers17}
+										rows={rows17}
+										{page17}
+										{pageSize17}
+										bind:selectedRowIds={selectedRowIds17}
+										on:click:row--select={handleReferenceCodeInput}
+									>
+										<Toolbar>
+											<ToolbarContent>
+												<ToolbarSearch shouldFilterRows />
+												<Button
+													kind="ghost"
+													on:click={loadFinancialData}
+													icon={Recycle}
+													iconDescription="Reload"
+													tooltipPosition="left"
+												/>
+												<Button
+													kind="ghost"
+													icon={Add}
+													iconDescription="Create New"
+													tooltipPosition="left"
+													on:click={createM17}
+												/>
+												<Button
+													kind="tertiary"
+													icon={Edit}
+													iconDescription="Edit Selected"
+													tooltipPosition="left"
+													on:click={enableEditM06}
+												/>
+												<Button
+													kind="primary"
+													icon={Save}
+													iconDescription="Save Changes"
+													tooltipPosition="left"
+													bind:disabled={editM06}
+													on:click={enableEditM06}
+													on:click={updateLoadM06}
+												/>
+												<Button
+													kind="danger"
+													icon={TrashCan}
+													iconDescription="Delete Selected"
+													tooltipPosition="left"
+													bind:disabled={editM06}
+													on:click={deleteLoadM06}
+												/>
+											</ToolbarContent>
+										</Toolbar>
+									</DataTable>
+									<Pagination
+										bind:pageSize17
+										bind:page17
+										totalItems={rows17.length}
+										pageSizeInputDisabled
+									/>
+								</div>
+								<div class="flex flex-col lg:w-1/2 gap-4">
+									<ComboBox
+										bind:value={tranAY}
+										titleText="Academic Year"
+										placeholder="Academic Year"
+										items={[{ id: '0', text: '2023-2024' }]}
+									/>
+									<TextInput
+										bind:value={tranID}
+										readonly
+										labelText="Transaction ID"
+										placeholder="This is system-generated"
+										required
+									/>
+									<TextInput
+										bind:value={tranNM}
+										labelText="Transaction Name"
+										placeholder="Title of transaction"
+										required
+									/>
+									<TextInput
+										bind:value={tranDC}
+										labelText="Transaction Description"
+										placeholder="Provide a short description for this transaction"
+										required
+									/>
+									<TextInput
+										bind:value={tranAM}
+										labelText="Amount to Pay"
+										placeholder="Php0.00"
+										required
+									/>
+									<ComboBox
+										bind:value={tranPY}
+										titleText="To be paid by"
+										placeholder="Year Level"
+										items={[
+											{ id: '0', text: 'Grade 01' },
+											{ id: '1', text: 'Grade 02' },
+											{ id: '2', text: 'Grade 03' },
+											{ id: '3', text: 'Grade 04' },
+											{ id: '4', text: 'Grade 05' },
+											{ id: '5', text: 'Grade 06' },
+											{ id: '6', text: 'Grade 07' },
+											{ id: '7', text: 'Grade 08' },
+											{ id: '8', text: 'Grade 09' },
+											{ id: '9', text: 'Grade 10' },
+											{ id: '10', text: 'Grade 11' },
+											{ id: '11', text: 'Grade 12' }
+										]}
+									/>
+								</div>
+							</div>
 						</div>
 					</div>
 				</Content>
